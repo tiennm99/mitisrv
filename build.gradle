@@ -50,7 +50,7 @@ publishing {
         }
     }
     publications {
-        gpr(MavenPublication) {
+        mavenJava(MavenPublication) {
             artifactId = 'mitisrv'
             from components.java
             versionMapping {
