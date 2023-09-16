@@ -2,9 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.9'
     id 'io.spring.dependency-management' version '1.1.3'
-    id 'java-library'
     id 'maven-publish'
-    id 'signing'
 }
 
 group = 'com.github.tiennm99'
@@ -51,7 +49,6 @@ publishing {
     }
     publications {
         mavenJava(MavenPublication) {
-            artifactId = 'mitisrv'
             from components.java
             versionMapping {
                 usage('java-api') {
@@ -80,16 +77,5 @@ publishing {
                 }
             }
         }
-    }
-}
-
-signing {
-    sign publishing.publications.mavenJava
-}
-
-
-javadoc {
-    if(JavaVersion.current().isJava9Compatible()) {
-        options.addBooleanOption('html5', true)
     }
 }
