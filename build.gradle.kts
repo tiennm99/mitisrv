@@ -1,6 +1,6 @@
 plugins {
     java
-    id("org.springframework.boot") version "2.7.9"
+    id("org.springframework.boot") version "2.2.13.RELEASE"
     id("io.spring.dependency-management") version "1.1.3"
     `maven-publish`
 }
@@ -25,12 +25,14 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.data:spring-data-couchbase:3.2.13.RELEASE")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-websocket")
-    implementation("org.springframework.boot:spring-boot-starter-data-redis")
-    compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
+
+    compileOnly("org.projectlombok:lombok")
+
+    implementation("jakarta.annotation:jakarta.annotation-api:2.1.1")
+    implementation("org.springframework.boot:spring-boot-starter:2.2.13.RELEASE")
+    implementation("org.springframework.data:spring-data-couchbase:3.2.13.RELEASE")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
@@ -63,7 +65,7 @@ publishing {
             pom {
                 name.set("MiTiSrv")
                 description.set("A game server created by miti99")
-                url.set("https://miti99.dev/")
+                url.set("https://tiennm99.github.io/")
                 licenses {
                     license {
                         name.set("The Apache License, Version 2.0")
@@ -79,24 +81,5 @@ publishing {
                 }
             }
         }
-    }
-}
-
-tasks {
-    val deleteLib by registering(Delete::class) {
-        group = "helper"
-        delete("lib")
-    }
-
-    val copyLib by registering(Copy::class) {
-        group = "tasks"
-        dependsOn(deleteLib)
-        from(
-            configurations.compileClasspath,
-            configurations.runtimeClasspath,
-            configurations.testCompileClasspath,
-            configurations.testRuntimeClasspath
-        )
-        into("lib")
     }
 }
