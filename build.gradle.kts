@@ -1,44 +1,72 @@
 plugins {
     java
-    id("org.springframework.boot") version "2.2.13.RELEASE"
-    id("io.spring.dependency-management") version "1.1.3"
+    idea
     `maven-publish`
 }
 
-group = "com.github.tiennm99"
+group = "io.github.tiennm99"
 version = "0.0.1-SNAPSHOT"
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    withJavadocJar()
-    withSourcesJar()
-}
-
 configurations {
-    val compileOnly by getting {
+    compileOnly {
         extendsFrom(configurations.annotationProcessor.get())
     }
+    testCompileOnly {
+        extendsFrom(configurations.testAnnotationProcessor.get())
+    }
+}
+
+dependencies {
+    val classgraphVersion = "4.8.177"
+    val gsonVersion = "2.11.0"
+    val junitVersion = "5.11.3"
+    val junitPlatformVersion = "1.11.3"
+    val log4jVersion = "2.24.1"
+    val lombokVersion = "1.18.34"
+
+    annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+
+    compileOnly("org.projectlombok:lombok:$lombokVersion")
+
+    implementation("com.google.code.gson:gson:$gsonVersion")
+
+    implementation("io.github.classgraph:classgraph:$classgraphVersion")
+
+    implementation("org.apache.logging.log4j:log4j-core:$log4jVersion")
+    implementation("org.apache.logging.log4j:log4j-slf4j2-impl:$log4jVersion")
+
+    testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+
+    testImplementation("org.junit.platform:junit-platform-launcher:$junitPlatformVersion")
+}
+
+idea {
+    module {
+        isDownloadJavadoc = true
+        isDownloadSources = true
+    }
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+    withJavadocJar()
+    withSourcesJar()
 }
 
 repositories {
     mavenCentral()
 }
 
-dependencies {
-    annotationProcessor("org.projectlombok:lombok")
-
-    compileOnly("org.projectlombok:lombok")
-
-    implementation("jakarta.annotation:jakarta.annotation-api:2.1.1")
-    implementation("org.springframework.boot:spring-boot-starter:2.2.13.RELEASE")
-    implementation("org.springframework.data:spring-data-couchbase:3.2.13.RELEASE")
-
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+tasks {
+    withType<Test> {
+        useJUnitPlatform()
+    }
 }
 
-tasks.named<Test>("test") {
-    useJUnitPlatform()
-}
 
 publishing {
     repositories {

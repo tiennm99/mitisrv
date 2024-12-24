@@ -4,4 +4,4 @@ A game server written by miti99
 
 ## Credits
 
-- [spring-data-examples](https://github.com/spring-projects/spring-data-examples)
+- [ratel](https://github.com/ainilili/ratel)
